@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_firebase_app/domain/core/errors.dart';
 
 import 'failures.dart';
 
@@ -22,4 +23,14 @@ abstract class ValueObject<T> {
   String toString() => 'Value(value: $value)';
 
   bool isValid() => value.isRight();
+
+  /// Thows [UnexpectedValueError] conatining the [ValueFailure]
+
+  T getORCrash() {
+    // id = identity - same as writing (right) => right
+    return value.fold(
+      (f) => throw UnexpectedValueError(f),
+      id,
+    );
+  }
 }
